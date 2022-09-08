@@ -32,34 +32,41 @@ $positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
 	 integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
 <body>
+
 <!-- Darbuotojai -->
-<?php if (count($employees) > 0): 
-   $i=1;
-   ?>
-   <div class="container">
-      <table class="table table-striped table-hover mb-3">
-         <thead>
-            <tr>
-               <th><?php echo implode('</th><th>', array_keys(current($employees)))?></th>
-            </tr>
-         </thead>
-         <tbody>
-            <?php foreach ($employees as $employee){ ?>
-            <tr>
-               <td><?= $employee['id'] ?></td>
-               <td><?= $employee['name'] ?></td>
-               <td><?= $employee['surname'] ?></td>
-               <td><?= $employee['gender'] ?></td>
-               <td><?= $employee['phone'] ?></td>
-               <td><?= $employee['birthday'] ?></td>
-               <td><?= $employee['education'] ?></td>
-               <td><?= ($employee['salary'])/100 ?></td>
-			      <td><a href="darbuotojas.php?id=<?= $employee['id'] ?>" class="btn btn-primary">Plačiau</a></td>
-               <?php } ?>
-            </tr>
-         </tbody>
-      </table>
-   <?php endif; ?>
+<div class="container">
+   <div class="card mt-5 mb-3">
+      <h5 class="card-header bg-primary">Visi įmonės darbuotojai:</h5>
+      <?php if (count($employees) > 0):
+         $i=1;
+         ?>
+         <div class="card-body">
+            <table class="table table-striped table-hover mb-3">
+               <thead>
+                  <tr>
+                     <th><?php echo implode('</th><th>', array_keys(current($employees)))?></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <?php foreach ($employees as $employee){ ?>
+                  <tr>
+                     <td><?= $employee['id'] ?></td>
+                     <td><?= $employee['name'] ?></td>
+                     <td><?= $employee['surname'] ?></td>
+                     <td><?= $employee['gender'] ?></td>
+                     <td><?= $employee['phone'] ?></td>
+                     <td><?= $employee['birthday'] ?></td>
+                     <td><?= $employee['education'] ?></td>
+                     <td><?= ($employee['salary'])/100 ?></td>
+                     <td><a href="darbuotojas.php?id=<?= $employee['id'] ?>" class="btn btn-primary">Plačiau</a></td>
+                     <?php } ?>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      <?php endif; ?>
+   </div>
+</div>
 
    <!-- Pareigos -->
    <?php 
