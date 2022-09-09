@@ -1,15 +1,23 @@
 
 <?php
  include("db.php");
-
- $sql = "SELECT * FROM employees";
-//  $sql = "SELECT id, name, surname, gender, phone, birthday, education, (salary)/100 as salaryM FROM employees"
-//Darbuotojai
- //pstm - pre-statement
+ if (isset($_GET['action']) && $_GET['action']=='delete'){
+ $sql = "SELECT * FROM employees WHERE id=?";
+ $stm=$pdo->prepare($sql);
+ $stm->execute([$_GET['id']]);
+ $employee=$stm->fetch(PDO::FETCH_ASSOC);
+ 
+ $sql="DELETE FROM employees WHERE id=?";
  $pstm=$pdo->prepare($sql);
- $pstm->execute();
- $employees=$pstm->fetchAll(PDO::FETCH_ASSOC);
+ $pstm->execute([$_GET['id']]);
+}
 
+//Darbuotojai
+$sql = "SELECT * FROM employees";
+//pstm - pre-statement
+$pstm=$pdo->prepare($sql);
+$pstm->execute();
+$employees=$pstm->fetchAll(PDO::FETCH_ASSOC);
 
 // Pareigos
 $sql2 = "SELECT * FROM positions";
@@ -34,17 +42,25 @@ $positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
 <!-- Darbuotojai -->
-<div class="container">
+<div class="container-fluid">
    <div class="card mt-5 mb-3">
       <h5 class="card-header bg-primary">Visi įmonės darbuotojai:</h5>
       <?php if (count($employees) > 0):
          $i=1;
          ?>
          <div class="card-body">
+            <a href="new.php" class="btn  btn-primary float-end">Pridėti naują darbuotoją</a>
             <table class="table table-striped table-hover mb-3">
                <thead>
                   <tr>
-                     <th><?php echo implode('</th><th>', array_keys(current($employees)))?></th>
+                     <td><strong>ID</strong></td>
+                     <td><strong>Vardas</strong></td>
+                     <td><strong>Pavardė</strong></td>
+                     <td><strong>Lytis</strong></td>
+                     <td><strong>Tel.nr.</strong></td>
+                     <td><strong>Gimimo data</strong></td>
+                     <td><strong>Išsilavinimas</strong></td>
+                     <td><strong>Atlyginimas<br>(EUR)</strong></td>
                   </tr>
                </thead>
                <tbody>
@@ -58,7 +74,9 @@ $positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
                      <td><?= $employee['birthday'] ?></td>
                      <td><?= $employee['education'] ?></td>
                      <td><?= ($employee['salary'])/100 ?></td>
-                     <td><a href="darbuotojas.php?id=<?= $employee['id'] ?>" class="btn btn-primary">Plačiau</a></td>
+                     <td><a href="darbuotojas.php?id=<?= $employee['id'] ?>" class="btn btn-warning">Plačiau</a></td>
+                     <td><a href="update.php?id=<?=$employee['id']?>" class="btn btn-success">Redaguoti</a></td>
+                     <td><a href="statistika.php?action=delete&id=<?=$employee['id']?>" class="btn btn-danger">Ištrinti</a></td>
                      <?php } ?>
                   </tr>
                </tbody>
@@ -67,15 +85,10 @@ $positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
       <?php endif; ?>
    </div>
 </div>
-
    <!-- Pareigos -->
    <?php 
     include("darbuotojai_pareigos.php");
    ?>
-
-
-
-
 </body>
 </html>
 

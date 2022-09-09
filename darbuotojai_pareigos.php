@@ -37,7 +37,9 @@ $positions=$pstm->fetchAll(PDO::FETCH_ASSOC);
                   <table class="table table-striped table-hover mb-3">
                      <thead>
                         <tr>
-                           <th><?php echo implode('</th><th>', array_keys(current($positions))); ?></th>
+                           <td><strong>ID</strong></td>
+                           <td><strong>Pareigos</strong></td>
+                           <td><strong>Atlyginimas</strong></td>
                         </tr>
                      </thead>
                      <tbody>
@@ -46,7 +48,7 @@ $positions=$pstm->fetchAll(PDO::FETCH_ASSOC);
                            <td><?= $position['id'] ?></td>
                            <td><?= $position['name'] ?></td>
                            <td><?= ($position['base_salary'])/100 ?></td>
-                           <td><a href="#" class="btn btn-primary">Rodyti darbuotojus</a></td>
+                           <td><a href="#" class="btn btn-secondary float-end">Rodyti darbuotojus</a></td>
                            <?php } ?>
                         </tr>
                      </tbody>

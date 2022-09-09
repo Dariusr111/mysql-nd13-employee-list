@@ -13,10 +13,7 @@ $pstm = $pdo->prepare($sql);
 $pstm->execute();
 $employees = $pstm->fetchAll(PDO::FETCH_ASSOC);
 
-
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,31 +30,33 @@ $employees = $pstm->fetchAll(PDO::FETCH_ASSOC);
 
 
 <body>
-   <div class="container" id="content" tabindex="-1">
+   <div class="container">
       <div class="row">
-         <?php foreach ($employees as $employee){ ?>
-         <div class="col-md-12">
-
-            <div class="page-header">
-
-               <h1><?= $employee['name'] ?> <?= $employee['surname'] ?></h1>
+         <div class="d-flex justify-content-center">
+            <div class="col-md-6">
+               <?php foreach ($employees as $employee){ ?>
+               <div class="card mt-5">
+                  <div class="card-header bg-light ms-4 me-4">
+                     <h1><?= $employee['name'] ?> <?= $employee['surname'] ?></h1>
+                  </div>
+                  <div class="ms-5 mt-3">
+                     <p>
+                        <b>Išsilavinimas: </b> <br /> <?= $employee['education'] ?>
+                     </p>
+                     <p>
+                        <b>Mėnesinė alga: </b> <br /><?= ($employee['salary'])/100 ?> EUR
+                     </p>
+                  </div>
+                  <div class="ms-5">
+                     <p>
+                        <b>Telefonas: </b> <br /><?= $employee['phone'] ?>
+                     </p>
+                  </div>
+               </div>
+               <?php } ?>
+                     </div>
             </div>
          </div>
-         <div class="col-md-6">
-            <p>
-               <b>Išsilavinimas: </b> <br /> <?= $employee['education'] ?>
-            </p>
-            <p>
-               <b>Mėnesinė alga: </b> <br /><?= ($employee['salary'])/100 ?> EUR
-            </p>
-         </div>
-         <div class="col-md-6">
-            <p>
-               <b>Telefonas: </b> <br /><?= $employee['phone'] ?>
-            </p>
-         </div>
-         <?php } ?>
-      </div>
    </div>
 
    <?php
@@ -68,34 +67,44 @@ if ($alga <= 1704) {
 } else {
     $npd = 400 - 0.18 * ($alga - 642);
 }
+if ($npd < 0){
+   $npd=0;
+}
+//round(5.045, 2)
 
-$gpm = ($alga - $npd) * 0.2;
-$psd = $alga * 0.0698;
-$soc = $alga * 0.1252;
-$irankas = $alga - $gpm - $psd - $soc;
-$darbdavioSodra = $alga * 0.0177;
-$darbGarantFondas = $alga * 0.0016;
-$sodra = $psd + $soc + $darbdavioSodra;
-$viso = $gpm + $sodra;
+$gpm = round((($alga - $npd) * 0.2), 2);
+$psd = round(($alga * 0.0698), 2);
+$soc = round(($alga * 0.1252), 2);
+$irankas = round(($alga - $gpm - $psd - $soc), 2);
+$darbdavioSodra = round(($alga * 0.0177), 2);
+$darbGarantFondas = round(($alga * 0.0016), 2);
+$sodra = round(($psd + $soc + $darbdavioSodra), 2);
+$viso = round(($gpm + $sodra), 2);
 
 ?>
-   <div class="container mt-5 mb-5 col-5">
-      <div class="card">
-         <div class="card-header bg-primary">
-            <h5>Darbuotojo atlyginimo išrašas:</h5>
-         </div>
-         <div class="card-body">
-            <h5 class="card-title">Darbuotojas: <?= $employee['name'] . ' ' . $employee['surname'] ?></h5>
-            <p class="mt-3"> Taikytinas NPD (Pritaikytas NPD): <strong><?= $npd ?></strong> EUR</p>
-            <p> Gyventojų pajamų mokestis GPM - 20.00% : <strong><?= $gpm ?></strong> EUR</p>
-            <p> Privalomasis sveikatos draudimas PSD - 6.98% : <strong><?= $psd ?></strong> EUR</p>
-            <p> Valstybinis socialinis draudimas VSD - 12.52% : <strong><?= $soc ?></strong> EUR</p>
-            <p> Atlyginimas į rankas : <strong><?= $irankas ?></strong> EUR</p>
-            <p> Darbdavio mokesčiai - Viso : <strong><?= $darbdavioSodra ?></strong> EUR</p>
-            <p> Sodrai. Įmokos kodas - 252 : <strong><?= $sodra ?></strong> EUR</p>
-            <p> Įmoka į Garantinį fondą : <strong><?= $darbGarantFondas ?></strong> EUR</p>
-            <p> VISO MOKĖSČIŲ : <strong><?= $viso ?></strong> EUR</p>
-            <a href="statistika.php" class="btn btn-primary">Atgal</a>
+   <div class="container mt-5 mb-5">
+      <div class="row">
+         <div class="d-flex justify-content-center">
+            <div class="col-md-6">
+               <div class="card">
+                  <div class="card-header bg-primary">
+                     <h5>Darbuotojo atlyginimo išrašas:</h5>
+                  </div>
+                  <div class="card-body">
+                     <h5 class="card-title">Darbuotojas : <?= $employee['name'] . ' ' . $employee['surname'] ?></h5>
+                     <p class="mt-3"> Taikytinas NPD (Pritaikytas NPD) : <strong><?= $npd ?></strong> EUR</p>
+                     <p> Gyventojų pajamų mokestis GPM 20.00% : <strong><?= $gpm ?></strong> EUR</p>
+                     <p> Privalomasis sveikatos draudimas PSD 6.98% : <strong><?= $psd ?></strong> EUR</p>
+                     <p> Valstybinis socialinis draudimas VSD 12.52% : <strong><?= $soc ?></strong> EUR</p>
+                     <p> Atlyginimas į rankas : <strong><?= $irankas ?></strong> EUR</p>
+                     <p> Darbdavio mokesčiai Viso : <strong><?= $darbdavioSodra ?></strong> EUR</p>
+                     <p> Sodrai. Įmokos kodas 252 : <strong><?= $sodra ?></strong> EUR</p>
+                     <p> Įmoka į Garantinį fondą : <strong><?= $darbGarantFondas ?></strong> EUR</p>
+                     <p> VISO MOKĖSČIŲ : <strong><?= $viso ?></strong> EUR</p>
+                     <a href="statistika.php" class="btn btn-primary">Atgal</a>
+                  </div>
+            </div>
+            </div>
          </div>
       </div>
    </div>
