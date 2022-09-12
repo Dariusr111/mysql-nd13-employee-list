@@ -31,7 +31,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-5">
-                    <div class="card-header">Pridėti naują darbuotoją</div>
+                    <div class="card-header"><strong>Pridėti naują darbuotoją</strong></div>
                     <div class="card-body">
                         <?php
                             if (isset($klaida)){
@@ -84,9 +84,7 @@
                             <button class="btn btn-success">Pridėti</button>
                             <a href="statistika.php" class="btn btn-info float-end">Atgal</a>
 
-
                         </form>
-
                     </div>
                 </div>
             </div>

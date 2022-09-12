@@ -1,9 +1,9 @@
 <?php
  include ("db.php");
   if (isset($_POST['action']) && $_POST['action']=='update'){
-    $sql="UPDATE employees SET name=?, surname=?, gender=?, phone=?, birthday=?, education=?, salary=? WHERE id=?";
+    $sql="UPDATE employees SET name=?, surname=?, gender=?, phone=?, birthday=?, education=?, salary=?, pareigos_id=? WHERE id=?";
     $stm=$pdo->prepare($sql);
-    $stm->execute([$_POST['name'], $_POST['surname'], $_POST['gender'], $_POST['phone'], $_POST['birthday'], $_POST['education'], $_POST['salary'], $_POST['id']]);
+    $stm->execute([$_POST['name'], $_POST['surname'], $_POST['gender'], $_POST['phone'], $_POST['birthday'], $_POST['education'], $_POST['salary'], $_POST['pareigos_id'], $_POST['id']]);
     header("location:statistika.php");
     die();
   }
@@ -33,7 +33,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-5">
-                    <div class="card-header">Redaguoti darbuotoją</div>
+                    <div class="card-header"><strong>Redaguoti darbuotoją</strong></div>
                     <div class="card-body">
                         <form action="" method="POST">
                             <input type="hidden" name="action" value="update"> 
@@ -50,8 +50,8 @@
                                 <label for="" class="form-label">Lytis</label>
                                 <select id="gender" name="gender" class="form-control" required> 
                                     <option value="" disabled selected>Pasirinkite</option>
-                                    <option value="Vyras">Vyras</option>
-                                    <option value="Moteris">Moteris</option>
+                                    <option value="Vyras" <?=($employee['gender']=='Vyras')?'selected':''?>>Vyras</option>
+                                    <option value="Moteris" <?=($employee['gender']=='Moteris')?'selected':''?>>Moteris</option>
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -65,16 +65,27 @@
                             <div class="mb-3">
                                 <label for="" class="form-label">Išsilavinimas</label>
                                 <select id="education" name="education" class="form-control"> 
-                                    <option value="" disabled selected>Pasirinkite</option>
-                                    <option value="Aukštasis išsilavinimas">Aukštasis išsilavinimas</option>
-                                    <option value="Aukštasis universitetinis išsilavinimas">Aukštasis universitetinis išsilavinimas</option>
-                                    <option value="Aukštasis koleginis išsilavinimas">Aukštasis koleginis išsilavinimas</option>
-                                    <option value="Aukštesnysis išsilavinimas">Aukštesnysis išsilavinimas</option>
+                                    <option value="" disabled>Pasirinkite</option>
+                                    <option value="Aukštasis išsilavinimas" <?=($employee['education']=='Aukštasis išsilavinimas')?'selected':''?>>Aukštasis išsilavinimas</option>
+                                    <option value="Aukštasis universitetinis išsilavinimas" <?=($employee['education']=='Aukštasis universitetinis išsilavinimas')?'selected':''?>>Aukštasis universitetinis išsilavinimas</option>
+                                    <option value="Aukštasis koleginis išsilavinimas" <?=($employee['education']=='Aukštasis koleginis išsilavinimas')?'selected':''?>>Aukštasis koleginis išsilavinimas</option>
+                                    <option value="Aukštesnysis išsilavinimas" <?=($employee['education']=='Aukštesnysis išsilavinimas')?'selected':''?>>Aukštesnysis išsilavinimas</option>
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Atlyginimas</label>
                                 <input name="salary" type="number" class="form-control" required value="<?=$employee['salary']?>" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Pareigos</label>
+                                <select id="pareigos_id" name="pareigos_id" class="form-control"> 
+                                    <option value="" disabled>Pasirinkite</option>
+                                    <option value="1" <?=($employee['pareigos_id']=='1')?'selected':''?>>Direktorius</option>
+                                    <option value="2" <?=($employee['pareigos_id']=='2')?'selected':''?>>Buhalteris</option>
+                                    <option value="3" <?=($employee['pareigos_id']=='3')?'selected':''?>>Programuotojas</option>
+                                    <option value="4" <?=($employee['pareigos_id']=='4')?'selected':''?>>Dizaineris</option>
+                                    <option value="5" <?=($employee['pareigos_id']=='5')?'selected':''?>>Vadybininkas</option>
+                                </select>
                             </div>
                             <button class="btn btn-success">Atnaujinti</button>
                             <a href="statistika.php" class="btn btn-info float-end">Atgal</a>

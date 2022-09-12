@@ -1,6 +1,7 @@
 
 <?php
  include("db.php");
+ //Delete opcija
  if (isset($_GET['action']) && $_GET['action']=='delete'){
  $sql = "SELECT * FROM employees WHERE id=?";
  $stm=$pdo->prepare($sql);
@@ -13,7 +14,7 @@
 }
 
 //Darbuotojai
-$sql = "SELECT * FROM employees";
+$sql = "SELECT employees.*, positions.name as position_name FROM `employees` LEFT JOIN positions ON employees.pareigos_id=positions.id ORDER BY id ASC";
 //pstm - pre-statement
 $pstm=$pdo->prepare($sql);
 $pstm->execute();
@@ -25,9 +26,7 @@ $sql2 = "SELECT * FROM positions";
 $pstm2=$pdo->prepare($sql2);
 $pstm2->execute();
 $positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,6 +60,7 @@ $positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
                      <td><strong>Gimimo data</strong></td>
                      <td><strong>Išsilavinimas</strong></td>
                      <td><strong>Atlyginimas<br>(EUR)</strong></td>
+                     <td><strong>Pareigos</strong></td>
                   </tr>
                </thead>
                <tbody>
@@ -74,6 +74,7 @@ $positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
                      <td><?= $employee['birthday'] ?></td>
                      <td><?= $employee['education'] ?></td>
                      <td><?= ($employee['salary'])/100 ?></td>
+                     <td><?= $employee['position_name'] ?></td>
                      <td><a href="darbuotojas.php?id=<?= $employee['id'] ?>" class="btn btn-warning">Plačiau</a></td>
                      <td><a href="update.php?id=<?=$employee['id']?>" class="btn btn-success">Redaguoti</a></td>
                      <td><a href="statistika.php?action=delete&id=<?=$employee['id']?>" class="btn btn-danger">Ištrinti</a></td>
