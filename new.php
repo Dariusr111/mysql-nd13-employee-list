@@ -5,9 +5,9 @@
   if (isset($_POST['action']) && $_POST['action']=='insert'){
     try{
         
-        $sql="INSERT INTO employees (name, surname, gender, phone, birthday, education, salary) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql="INSERT INTO employees (name, surname, gender, phone, birthday, education, salary, pareigos_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stm=$pdo->prepare($sql);
-        $stm->execute([ $_POST['name'], $_POST['surname'], $_POST['gender'], $_POST['phone'], $_POST['birthday'], $_POST['education'], $_POST['salary']]);
+        $stm->execute([ $_POST['name'], $_POST['surname'], $_POST['gender'], $_POST['phone'], $_POST['birthday'], $_POST['education'], $_POST['salary'], $_POST['pareigos_id']]);
         header("location:statistika.php");
         die();
     }catch(Exception $e){
@@ -80,6 +80,17 @@
                             <div class="mb-3">
                                 <label for="" class="form-label">Atlyginimas</label>
                                 <input name="salary" type="text" class="form-control"  >
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Pareigos</label>
+                                <select id="pareigos_id" name="pareigos_id" class="form-control"> 
+                                    <option value="" disabled>Pasirinkite</option>
+                                    <option value="1">Direktorius</option>
+                                    <option value="2">Buhalteris</option>
+                                    <option value="3">Programuotojas</option>
+                                    <option value="4">Dizaineris</option>
+                                    <option value="5">Vadybininkas</option>
+                                </select>
                             </div>
                             <button class="btn btn-success">Pridėti</button>
                             <a href="statistika.php" class="btn btn-info float-end">Atgal</a>
