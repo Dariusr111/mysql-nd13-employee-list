@@ -2,8 +2,7 @@
 include("db.php");
 if (isset($_POST['action']) && $_POST['action'] == 'insert') {
 
-// rekia pridėti patikrinimą, kad nebūtų galima priskirti to pačio projekto!!
-
+// rekia pridėti patikrinimą, kad nebūtų galima priskirti to pačio projekto
     $sql = "INSERT INTO empl_projects (project_id, employee_id) VALUES (?, ?)";
     $stm = $pdo->prepare($sql);
     $stm->execute([$_POST['project_id'], $_GET['id']]);
@@ -21,8 +20,8 @@ $pstm->execute();
 $employees = $pstm->fetchAll(PDO::FETCH_ASSOC);
 
 
-// su LEFT JOIN prijungti project name
-$sql = "SELECT * FROM empl_projects WHERE employee_id = $darbuotojasID";
+// prijungiam project_id ir projects[name]
+$sql = "SELECT ep.project_id, p.name FROM `empl_projects` ep LEFT JOIN employees e ON e.id=ep.employee_id LEFT JOIN projects p ON ep.project_id=p.id WHERE e.id = $darbuotojasID ORDER BY ep.project_id ASC";
 $pstm = $pdo->prepare($sql);
 $pstm->execute();
 $employee_projects = $pstm->fetchAll(PDO::FETCH_ASSOC);
@@ -117,12 +116,11 @@ if (isset($_GET['id'])) {
                                                     <p> <?= $employee_project['project_id'] ?></p>
                                                 <?php } ?>
                                             </td>
-                                            <!-- LEFT JOIN prijungti project name -->
-                                            <!-- <td>
-                                                <?php foreach ($projects as $project) { ?>
-                                                    <p> <?= $project['name'] ?></p>
+                                            <td>
+                                            <?php foreach ($employee_projects as $employee_project) { ?>
+                                                    <p> <?= $employee_project['name'] ?></p>
                                                 <?php } ?>
-                                            </td> -->
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
