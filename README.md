@@ -10,7 +10,8 @@ Contributors names and contact info: Darius Ruzgys @Dariusr111
 ![php-pask-13-nd-new-php-2022-09-09-10_11_39](https://user-images.githubusercontent.com/106965568/189292586-05e4b5c3-7589-4a93-8690-fdc0d63eaac4.png)
 ![phpmyadmin-index-php-2022-09-09-10_20_47](https://user-images.githubusercontent.com/106965568/189294472-812beeef-1717-4f45-9ccd-fffafb248c6d.png)
 ![image](https://user-images.githubusercontent.com/106965568/189696367-5c7a8df7-698a-4bb0-a40c-441ccf6d6e87.png)
-![many-to-many](https://user-images.githubusercontent.com/106965568/189824970-d5b94c87-cd07-4b99-b1d7-66ccfb987c7a.JPG)
+![image](https://user-images.githubusercontent.com/106965568/189947112-0071c4d9-969b-4444-9fef-960d65001403.png)
+
 
 
  
