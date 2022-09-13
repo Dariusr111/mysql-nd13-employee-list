@@ -8,9 +8,11 @@
  $stm->execute([$_GET['id']]);
  $employee=$stm->fetch(PDO::FETCH_ASSOC);
  
+
  $sql="DELETE FROM employees WHERE id=?";
  $pstm=$pdo->prepare($sql);
  $pstm->execute([$_GET['id']]);
+
 }
 
 //Darbuotojai
@@ -75,6 +77,7 @@ $positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
                      <td><?= $employee['education'] ?></td>
                      <td><?= ($employee['salary'])/100 ?></td>
                      <td><?= $employee['position_name'] ?></td>
+                     <td><a href="add_proj.php?id=<?=$employee['id']?>" class="btn btn-secondary">Projektas</a></td>
                      <td><a href="darbuotojas.php?id=<?= $employee['id'] ?>" class="btn btn-warning">Plačiau</a></td>
                      <td><a href="update.php?id=<?=$employee['id']?>" class="btn btn-success">Redaguoti</a></td>
                      <td><a href="statistika.php?action=delete&id=<?=$employee['id']?>" class="btn btn-danger">Ištrinti</a></td>

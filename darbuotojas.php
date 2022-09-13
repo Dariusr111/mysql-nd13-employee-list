@@ -6,8 +6,6 @@ include("db.php");
 $darbuotojasID = $_GET['id'];
 
 $sql = "SELECT * FROM employees WHERE id = $darbuotojasID";
-
-
 //pstm - pre-statement
 $pstm = $pdo->prepare($sql);
 $pstm->execute();

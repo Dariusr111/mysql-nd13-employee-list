@@ -7,12 +7,21 @@
     header("location:statistika.php");
     die();
   }
+  
   $employee=[];
+  $position=[];
+
   if (isset($_GET['id'])){
     $sql="SELECT * FROM employees WHERE id=?";
     $stm=$pdo->prepare($sql);
     $stm->execute([$_GET['id']]);
     $employee=$stm->fetch(PDO::FETCH_ASSOC);
+
+    $sql = "SELECT * FROM positions";
+    $stm = $pdo->prepare($sql);
+    $stm->execute([]);
+    $position = $stm->fetchAll(PDO::FETCH_ASSOC);
+
   }else{
     header("location:statistika.php");
     die();
@@ -85,6 +94,13 @@
                                     <option value="3" <?=($employee['pareigos_id']=='3')?'selected':''?>>Programuotojas</option>
                                     <option value="4" <?=($employee['pareigos_id']=='4')?'selected':''?>>Dizaineris</option>
                                     <option value="5" <?=($employee['pareigos_id']=='5')?'selected':''?>>Vadybininkas</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <select name="projects" class="form-control mb-3">
+                                    <?php foreach ($projects as $project) { ?>
+                                        <option value="<?= $project['id'] ?>"><?= $project['name'] ?></option>
+                                        <?php } ?>  
                                 </select>
                             </div>
                             <button class="btn btn-success">Atnaujinti</button>
