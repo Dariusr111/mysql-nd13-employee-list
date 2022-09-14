@@ -15,19 +15,38 @@
 
 }
 
-//Darbuotojai
+//Darbuotojai + pareigos
 $sql = "SELECT employees.*, positions.name as position_name FROM `employees` LEFT JOIN positions ON employees.pareigos_id=positions.id ORDER BY id ASC";
 //pstm - pre-statement
 $pstm=$pdo->prepare($sql);
 $pstm->execute();
 $employees=$pstm->fetchAll(PDO::FETCH_ASSOC);
 
-// Pareigos
-$sql2 = "SELECT * FROM positions";
+// Visų darbuotojų skaičius
+$sql= "SELECT count(*) as darb_skaicius FROM `employees`";
+$pstm=$pdo->prepare($sql);
+$pstm->execute();
+$darb_sk=$pstm->fetchAll(PDO::FETCH_ASSOC);
 
-$pstm2=$pdo->prepare($sql2);
-$pstm2->execute();
-$positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
+
+// Vidutinis darbo užmokestis
+$sql= "SELECT ROUND((AVG(e.salary)/100),0) as vid FROM `employees` e";
+$pstm=$pdo->prepare($sql);
+$pstm->execute();
+$vid_alg=$pstm->fetchAll(PDO::FETCH_ASSOC);
+
+// Minimalus darbo užmokestis
+$sql= "SELECT ROUND((MIN(e.salary)/100),0) as vid FROM `employees` e";
+$pstm=$pdo->prepare($sql);
+$pstm->execute();
+$min_alg=$pstm->fetchAll(PDO::FETCH_ASSOC);
+
+// Maksimalus darbo užmokestis
+$sql= "SELECT ROUND((MAX(e.salary)/100),0) as vid FROM `employees` e";
+$pstm=$pdo->prepare($sql);
+$pstm->execute();
+$max_alg=$pstm->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -89,10 +108,53 @@ $positions=$pstm2->fetchAll(PDO::FETCH_ASSOC);
       <?php endif; ?>
    </div>
 </div>
-   <!-- Pareigos -->
-   <?php 
-    include("darbuotojai_pareigos.php");
-   ?>
+   <div>
+      <!-- Pareigos -->
+      <?php
+       include("darbuotojai_pareigos.php");
+      ?>
+   </div>
+   <!-- Įmonės statistika -->
+   <div class="container">
+      <div class="row">
+               <div class="col-md-2">
+               </div>   
+               <div class="col-md-8">
+                  <div class="card mt-5 mb-5">
+                     <h5 class="card-header bg-primary">Įmonės statistika:</h5>
+                     <div class="container">
+                        <table class="table table-striped table-hover ms-1 mb-3">
+                           <tbody>
+                              <tr>
+                                 <td><strong>Įmonėje dirbančių žmonių skaičius</strong></td>
+                                 <td><?php echo $darb_sk[0]["darb_skaicius"]?></td>
+                              </tr>
+                              <tr>
+                                 <td><strong>Vidutinis darbo užmokestis</strong></td>
+                                 <td><?php echo $vid_alg[0]["vid"]." EUR" ?></td>
+                              </tr>
+                              <tr>
+                                 <td><strong>Minimalus darbo užmokestis</strong></td>
+                                 <td><?php echo $min_alg[0]["vid"]." EUR" ?></td>
+                              </tr>
+                              <tr>
+                                 <td><strong>Maksimalus darbo užmokestis</strong></td>
+                                 <td><?php echo $max_alg[0]["vid"]." EUR" ?></td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-2">
+               </div> 
+            
+         </div>
+   </div>
+
+
+
+
 </body>
 </html>
 

@@ -2,15 +2,13 @@
 include("db.php");
 
 
-$sql = "SELECT * FROM positions";
 
 
-
+// Positions lentelė + darbuotojų skaičius pareigose
+$sql= "SELECT p.id, p.name, p.base_salary, COUNT(e.id) AS sk FROM `positions` p  LEFT JOIN employees e ON e.pareigos_id=p.id GROUP BY p.id";
 $pstm=$pdo->prepare($sql);
 $pstm->execute();
 $positions=$pstm->fetchAll(PDO::FETCH_ASSOC);
-
-// print_r ($positions);
 
 ?>
 
@@ -29,17 +27,19 @@ $positions=$pstm->fetchAll(PDO::FETCH_ASSOC);
 <body>
    <div class="container mb-4">
       <div class="row">
+         <div class="col-md-2"></div>
          <div class="col-md-8">
             <div class="card mt-5 mb-5">
                <h5 class="card-header bg-primary">Baziniai darbo užmokesčiai:</h5>
                <?php if (count($positions) > 0): ?>
                <div class="container">
-                  <table class="table table-striped table-hover mb-3">
+                  <table class="table table-striped table-hover mb-2">
                      <thead>
                         <tr>
                            <td><strong>ID</strong></td>
                            <td><strong>Pareigos</strong></td>
                            <td><strong>Atlyginimas</strong></td>
+                           <td><strong>Darbuotojų sk.</strong></td>
                         </tr>
                      </thead>
                      <tbody>
@@ -48,6 +48,7 @@ $positions=$pstm->fetchAll(PDO::FETCH_ASSOC);
                            <td><?= $position['id'] ?></td>
                            <td><?= $position['name'] ?></td>
                            <td><?= ($position['base_salary'])/100 ?></td>
+                           <td><?= $position['sk'] ?></td>
                            <td><a href="#" class="btn btn-secondary float-end">Rodyti darbuotojus</a></td>
                            <?php } ?>
                         </tr>
@@ -57,6 +58,7 @@ $positions=$pstm->fetchAll(PDO::FETCH_ASSOC);
                </div>
             </div>
          </div>
+         <div class="col-md-2"></div>
       </div>
    </div>
 </body>
